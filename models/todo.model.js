@@ -5,11 +5,13 @@ const todoSchema = Mongoose.Schema(
     {
         title: {
             type: String,
-            required: [true, "Du måste ange en titel för din todo"]
+            required: [true, "Du måste ange en titel för din todo."],
+            minlength: [3, "Titeln måste vara minst 3 tecken."]
         },
         description: {
             type: String,
-            required: [true, "Du måste ange en beskrivning av din todo"]
+            required: false,
+            maxlength: [200, "Beskrivningen får vara max 200 tecken."]
         },
         status: {
             type: String,
