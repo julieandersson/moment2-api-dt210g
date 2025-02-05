@@ -25,6 +25,9 @@ const init = async () => {
         console.error("Fel vid anslutning till databasen: " + error); // Felmeddelande vid misslyckad anslutning
     });
 
+    // inkluderar route för todos
+    require("./routes/todo.route")(server);
+
     await server.start();
     console.log('Server startad på %s', server.info.uri); // loggar serverns URI
 };
