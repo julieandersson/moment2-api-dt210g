@@ -29,7 +29,12 @@ exports.getOneTodo = async (request, h) => {
         const todo = await Todo.findById(request.params.id);
         return todo || h.response("Todo:n med det angivna ID:et hittades inte").code(404);
     } catch (err) {
-        return h.response(err).code(500);
+        // Oväntade fel
+        return h.response({
+            statusCode: 500,
+            error: "Internal Server Error",
+            message: "Ett oväntat fel inträffade."
+        }).code(500);
     }
 };
 
@@ -47,22 +52,34 @@ exports.postNewTodo = async (request, h) => {
             addedTodo: savedTodo // Returnerar den nya todo:n
         }).code(201);
     } catch (err) {
+        if (err.name === "ValidationError") {
+            // Om felet är en valideringsmiss, returnera 400 och felmeddelanden från schemat
+            return h.response({
+                statusCode: 400,
+                error: "Bad Request",
+                message: Object.values(err.errors).map(e => e.message) // extraherar alla valideringsfelmeddelanden
+            }).code(400);
+        }
+
         // Oväntade fel
         return h.response({
             statusCode: 500,
             error: "Internal Server Error",
             message: "Ett oväntat fel inträffade."
         }).code(500);
-    } 
+    }
 };
 
 // Controller för att uppdatera en todo
 exports.updateOneTodo = async (request, h) => {
     try {
         const updatedTodo = await Todo.findByIdAndUpdate(
-            request.params.id, // ID på todo:n som ska uppdateras
-            request.payload, // Den nya datan som skickats
-            { new: true } // Returnera den uppdaterade todo:n
+            request.params.id, 
+            request.payload, 
+            { 
+                new: true, // returnerar den uppdaterade todo:n
+                runValidators: true // kör Mongoose validering
+            }
         );
 
         if (!updatedTodo) {
@@ -80,11 +97,10 @@ exports.updateOneTodo = async (request, h) => {
         }).code(200);
     } catch (err) {
         return h.response({
-            // Oväntade fel
-            statusCode: 500,
-            error: "Internal Server Error",
-            message: "Ett oväntat fel inträffade vid uppdatering."
-        }).code(500);
+            statusCode: 400,
+            error: "Bad Request",
+            message: err.message // Returnerar valideringsfel
+        }).code(400);
     }
 };
 
