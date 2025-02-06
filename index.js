@@ -14,8 +14,8 @@ const init = async () => {
         routes: {
             cors: {
                 origin: ['*'], // tillåter alla CORS-anrop
-                headers: ['Accept', 'Content-Type', 'Authorization'], // tillåtna headers
-                exposedHeaders: ['Authorization'], // headers som kan exponeras
+                headers: ['Accept', 'Content-Type', 'Authorization', 'Access-Control-Allow-Origin'], // tillåtna headers
+                exposedHeaders: ['Authorization', 'Access-Control-Allow-Origin'], // headers som kan exponeras
                 additionalHeaders: ['Access-Control-Allow-Origin'], // extra headers om behövs
                 credentials: true // tillåter cookies och autentisering
             }
