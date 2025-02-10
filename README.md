@@ -2,6 +2,8 @@
 ## Uppgiftsbeskrivning
 Denna uppgift ingår i moment 2 av kursen DT210G, Fördjupad frontend-utveckling och gick ut på att skapa ett backend-API för en Todo-applikation. API:et är byggt med Hapi.js och MongoDB och hanterar CRUD-operationer för todo-objekt.
 
+APIET är publicerad via render och går att nå här: [API](https://moment2-api-dt210g.onrender.com/todos)
+
 ## Funktionalitet
 API:et har stöd för följande:
 - **Skapad en ny todo** (POST /todo)
